@@ -8,7 +8,13 @@ router.get('/', async(req, res) => {
   // find all products
   try {
     const productData = await Product.findAll({
-      include: [{ model: Tag }, { model: Category }]
+      include: [{ 
+        model: Tag,
+      attributes: ['id', 'category_name']
+     },
+      { 
+        model: Category,
+      attributes: ['id', 'tag_name'] }]
     });
     res.status(200).json(productData);
   } catch (err) {
@@ -22,7 +28,11 @@ router.get('/:id', async(req, res) => {
   // find a single product by its `id`
   try {
     const productData = await Product.findByPk(req.params.id, {
-      include: [{ model: Category }, { model: Tag, through: ProductTag }]
+      include: [{
+         model: Category,
+        attributes: ['id', 'category_name']
+       }, {
+         model: Tag, through: ProductTag }]
     });
     if (!productData) {
       res.status(404).json({ message: 'No product found with this id.' });
@@ -35,6 +45,7 @@ router.get('/:id', async(req, res) => {
 });
 
 // create new product
+// create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -44,7 +55,13 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
-  Product.create(req.body)
+  Product.create({
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    category_id: req.body.category_id,
+    tagIds: req.body.tag_id
+  })
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
