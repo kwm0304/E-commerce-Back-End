@@ -10,11 +10,11 @@ router.get('/', async(req, res) => {
     const productData = await Product.findAll({
       include: [{ 
         model: Tag,
-      attributes: ['id', 'category_name']
+      attributes: ['id', 'tag_name']
      },
       { 
         model: Category,
-      attributes: ['id', 'tag_name'] }]
+      attributes: ['id', 'category_name'] }]
     });
     res.status(200).json(productData);
   } catch (err) {
@@ -30,7 +30,7 @@ router.get('/:id', async(req, res) => {
     const productData = await Product.findByPk(req.params.id, {
       include: [{
          model: Category,
-        attributes: ['id', 'category_name']
+        attributes: ['id']
        }, {
          model: Tag, through: ProductTag }]
     });
@@ -44,7 +44,6 @@ router.get('/:id', async(req, res) => {
   }
 });
 
-// create new product
 // create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
