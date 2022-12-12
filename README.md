@@ -17,6 +17,7 @@ Video link: https://drive.google.com/file/d/1h3_hRun5wXpcAJGpi0QTO478a-HFbP1g/vi
 ## Test
 Can test in insomnia following the layout shown in routes/index.js or can be seen in screenshot above.
 
-
+## License
+This covered under the 'Unlicense' license.
 
 
